@@ -3,10 +3,6 @@ import productModel from "../models/product.js";
 export default class ProductsManager {
     
     getProducts = (limit, page ) =>{
-
-        // const {docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = productModel.paginate({}, {page, limit: limit, lean: true})
-        // const users = docs;
-        // return { users, hasPrevPage, hasNextPage, prevPage, nextPage, page: rest.page  }
      
         const result = productModel.paginate({}, {page, limit: limit, lean: true})
         return result
@@ -16,7 +12,9 @@ export default class ProductsManager {
         return productModel.paginate(
             {
               $or: [
-                { title: { $regex: query, $options: 'i' } }
+                { title: { $regex: query, $options: 'i' } },
+                { description: { $regex: query, $options: 'i' } },
+                { category: { $regex: query, $options: 'i' } }
               ]
             },
             {

@@ -11,10 +11,6 @@ productsRouter.get('/', async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort === 'desc' ? -1 : 1;
     const query = req.query.query || '';
-    console.log(limit);
-    console.log(page);
-    console.log(sort);
-    console.log(query);
     
   try {
     const result = await productsService.getProductsPage(limit, page, query, sort);
