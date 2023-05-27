@@ -10,6 +10,7 @@ import viewsRouter from './routes/views.routes.js';
 
 import registerChatHandler from "./listeners/chatHandler.js";
 import registerProductsHandler from './listeners/productsHandler.js';
+import registerCartsHandler from './listeners/cartsHandler.js';
 import __dirname from './utils.js';
 
 const app = express();
@@ -35,6 +36,7 @@ io.on('connection', socket=> {
     console.log("Cliente conectado");
     registerChatHandler(io, socket);
     registerProductsHandler(io,socket);
+    registerCartsHandler(io,socket);
 })
 
 

@@ -2,12 +2,37 @@ import productModel from "../models/product.js";
 
 export default class ProductsManager {
     
-    getProducts = (params) =>{
-        return productModel.find(params).lean();
+    getProducts = (limit, page ) =>{
+
+        // const {docs, hasPrevPage, hasNextPage, prevPage, nextPage, ...rest } = productModel.paginate({}, {page, limit: limit, lean: true})
+        // const users = docs;
+        // return { users, hasPrevPage, hasNextPage, prevPage, nextPage, page: rest.page  }
+     
+        const result = productModel.paginate({}, {page, limit: limit, lean: true})
+        return result
+    }
+
+    getProductsPage = (limit, page, query, sort) => {
+        return productModel.paginate(
+            {
+              $or: [
+                { title: { $regex: query, $options: 'i' } }
+              ]
+            },
+            {
+              limit,
+              page,
+              sort: { price: sort }
+            }
+        )
     }
 
     getProductById = (params) =>{
         return productModel.findOne(params).lean();
+    }
+
+    findByCode = (code) => {
+        return productModel.findOne({ code: code});
     }
 
     createProduct = (product) =>{
@@ -15,10 +40,10 @@ export default class ProductsManager {
     }
 
     updateProduct = (id, product) =>{
-        return companyModel.findByIdAndUpdate(id, {$set:product});
+        return companyModel.findByIdAndUpdate(id, product, { new: true });
     }
 
     deleteProduct = (id) =>{
-        return productModel.findOneAndDelete(id);
+        return productModel.findByIdAndDelete(id);
     }
 }
